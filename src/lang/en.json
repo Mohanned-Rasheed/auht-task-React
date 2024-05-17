@@ -1,3 +1,48 @@
- {
-    "title": "Welcome to React and react-i18next"
+{
+  "loginPage": {
+    "login": "Login",
+    "email": "Email",
+    "password": "Password",
+    "forgot password": "Forgot Password?",
+    "or": "Or",
+    "login with google": "Login with Google",
+    "dont have and account register": "Dont have and account?",
+    "register": "Register"
+  },
+  "registerPage": {
+    "register": "Register",
+    "full name in english": "Full Name in English",
+    "full name in arabic": "Full Name in Arabic",
+    "mobile number": "Mobile Number",
+    "email address": "Email Address",
+    "password": "Password",
+    "confirm password": "Confirm Password",
+    "show": "Show",
+    "hide": "Hide",
+    "alreday have an account login": "Alreday have an account?",
+    "login": "Login"
+  },
+  "errors": {
+    "Name in English is required": "Name in English is required",
+    "Enter only English characters": "Enter only English characters",
+    "Max Number is 50 characters": "Max Number is 50 characters",
+    "Name in Arabic is required": "Name in Arabic is required",
+    "Enter only Arabic characters": "Enter only Arabic characters",
+    "Birth date is required": "Birth date is required",
+    "Your age must be more than 18 years old": "Your age must be more than 18 years old",
+    "Mobile number is required": "Mobile number is required",
+    "Max Number is 12 Number": "Max Number is 12 Number",
+    "Email is required": "Email is required",
+    "Enter vaild email": "Enter vaild email",
+    "Password is required": "Password is required",
+    "password must including letter,number,and symbol": "password must including letter,number,and symbol",
+    "The password must more than 8 characters": "The password must more than 8 characters",
+    "Enter only numbers": "Enter only numbers",
+    "Confirm password is required": "Confirm password is required",
+    "Confirm password not same as password": "Confirm password not same as password"
+  },
+  "mode": {
+    "Light Mode": "Light Mode",
+    "Dark Mode": "Dark Mode"
   }
+}

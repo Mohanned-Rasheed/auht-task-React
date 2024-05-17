@@ -1,3 +1,48 @@
 {
-    "title": "أهلا وسهلا"
+  "loginPage": {
+    "login": "تسجيل دخول",
+    "email": "ايميل",
+    "password": "الرقم السري",
+    "forgot password": "نسيت الرقم السري؟",
+    "or": "أو",
+    "login with google": "تسجل باستخدام قوقل",
+    "dont have and account register": "ليس لديك حساب؟",
+    "register": "سجل "
+  },
+  "registerPage": {
+    "register": "انشاء حساب جديد",
+    "full name in english": "أسمك كامل بالانقليزي",
+    "full name in arabic": "أسمك كامل بالعربي",
+    "mobile number": "رقم الجوال",
+    "email address": "الايميل",
+    "password": "الرقم السري",
+    "confirm password": "تأكيد الرقم السري",
+    "show": "اظهار",
+    "hide": "اخفاء",
+    "alreday have an account login": "هل لديك حساب مسبقا؟",
+    "login": "تسجيل دخول"
+  },
+  "errors": {
+    "Name in English is required": "الاسم باللغة الانجليزية مطلوب",
+    "Enter only English characters": "أدخل الأحرف الإنجليزية فقط",
+    "Max Number is 50 characters": "الحد الأقصى للرقم هو 50 حرفًا",
+    "Name in Arabic is required": "الاسم باللغة العربية مطلوب",
+    "Enter only Arabic characters": "أدخل الحروف العربية فقط",
+    "Birth date is required": "تاريخ الميلاد مطلوب",
+    "Your age must be more than 18 years old": "يجب أن يكون عمرك أكثر من 18 عامًا",
+    "Mobile number is required": "رقم الجوال مطلوب",
+    "Max Number is 12 Number": "الحد الأقصى للرقم هو 12 رقمًا",
+    "Email is required": "البريد الالكتروني مطلوب",
+    "Enter vaild email": "أدخل بريدًا إلكترونيًا صالحًا",
+    "Password is required": "كلمة المرور مطلوبة",
+    "password must including letter,number,and symbol": "يجب أن تشتمل كلمة المرور على حرف ورقم ورمز",
+    "Enter only numbers": "أدخل أرقامًا فقط",
+    "The password must more than 8 characters": "كلمة المرور يجب أن تكون أكثر من 8 أحرف",
+    "Confirm password is required": "تأكيد كلمة المرور مطلوب",
+    "Confirm password not same as password": "تأكيد كلمة المرور ليست نفس كلمة المرور"
+  },
+  "mode": {
+    "Light Mode": "وضع الضوء",
+    "Dark Mode": "وضع المظلم"
   }
+}
