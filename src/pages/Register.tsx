@@ -4,6 +4,11 @@ import { Link } from "react-router-dom";
 import DarkLight from "../components/darkLight";
 import { useTranslation } from "react-i18next";
 import ChangeLang from "../components/changeLang";
+import { doc, setDoc } from "firebase/firestore";
+import { db, auth } from "../firebase/config";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+
 interface Props {}
 type FormFields = {
   nameEnglish: string;
@@ -23,9 +28,23 @@ function Register(props: Props) {
   } = useForm<FormFields>();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confpasswordVisible, setconfPasswordVisible] = useState(false);
-
+  const navigate = useNavigate();
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    console.log(data);
+    createUserWithEmailAndPassword(auth, data.email, data.password).then(
+      async () => {
+        window.localStorage.setItem("dateOfBirth", data.date);
+        window.localStorage.setItem("mobileNumber", data.phoneNumber);
+        window.localStorage.setItem("nameInEnglish", data.nameEnglish);
+        window.localStorage.setItem("nameinArabic", data.nameArabic);
+        await setDoc(doc(db, "users", auth.currentUser!.uid), {
+          nameInEnglish: data.nameEnglish,
+          nameinArabic: data.nameArabic,
+          dateOfBirth: data.date,
+          mobileNumber: data.phoneNumber,
+        });
+        navigate("/");
+      }
+    );
   };
   const {} = props;
   const [t, i18n] = useTranslation();
@@ -34,7 +53,7 @@ function Register(props: Props) {
       <div className="h-screen bg-gray-200 flex justify-center dark:bg-gray-700">
         <DarkLight />
         <ChangeLang />
-        <div className="flex flex-col items-center max-w-[30rem] m-auto w-[30rem]  bg-white rounded-md dark:bg-slate-900 dark:text-white">
+        <div className="flex flex-col items-center max-w-[30rem] m-auto w-[30rem] bg-white rounded-md dark:bg-slate-900 dark:text-white">
           <div className="mt-6 text-3xl font-bold">
             {t("registerPage.register")}
           </div>
@@ -217,7 +236,7 @@ function Register(props: Props) {
           </form>
           <div className="mt-12 mb-4">
             {t("registerPage.alreday have an account login")}{" "}
-            <Link to={"/"}>{t("registerPage.login")}</Link>
+            <Link to={"/login"}>{t("registerPage.login")}</Link>
           </div>
         </div>
       </div>

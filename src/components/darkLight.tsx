@@ -23,8 +23,6 @@ function DarkLight(props: Props) {
   );
 
   useEffect(() => {
-    console.log("asdasd");
-
     if (localStorage.getItem("mode") == "Dark") {
       document.documentElement.classList.add("dark");
       localStorage.setItem("mode", "Dark");
