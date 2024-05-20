@@ -1,17 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import DarkLight from "../components/darkLight";
 import { useTranslation } from "react-i18next";
-import ChangeLang from "../components/changeLang";
 import { doc, setDoc } from "firebase/firestore";
-import { db, auth } from "../firebase/config";
+import { db, auth, imageDB } from "../firebase/config";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 interface Props {}
 type FormFields = {
   nameEnglish: string;
@@ -21,6 +19,7 @@ type FormFields = {
   email: string;
   password: string;
   confPassword: string;
+  img: File;
 };
 function Register(props: Props) {
   const {
@@ -29,9 +28,21 @@ function Register(props: Props) {
     handleSubmit,
     formState: { errors },
   } = useForm<FormFields>();
+  const {} = props;
+  const [t, i18n] = useTranslation();
+  const [img, setImg] = useState<File | null>(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confpasswordVisible, setconfPasswordVisible] = useState(false);
   const navigate = useNavigate();
+  async function getImage(location: string) {
+    const ImageURL = await getDownloadURL(ref(imageDB, location));
+    return await ImageURL;
+  }
+  const imageFrom = async () => {
+    const image = await getImage(`files/${auth.currentUser?.email}`);
+    window.localStorage.setItem("profileImg", image);
+  };
+
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     createUserWithEmailAndPassword(auth, data.email, data.password)
       .then(async () => {
@@ -45,6 +56,15 @@ function Register(props: Props) {
           dateOfBirth: data.date.toString(),
           mobileNumber: data.phoneNumber,
         });
+        if (img != null) {
+          uploadBytes(ref(imageDB, `files/${auth.currentUser?.email}`), img!)
+            .then(() => {
+              imageFrom();
+            })
+            .catch((err) => {
+              alert(err);
+            });
+        }
         sendEmailVerification(auth.currentUser!);
         navigate("/");
       })
@@ -52,13 +72,10 @@ function Register(props: Props) {
         alert(err);
       });
   };
-  const {} = props;
-  const [t, i18n] = useTranslation();
+
   return (
     <>
-      <div className="h-screen bg-gray-200 flex justify-center dark:bg-gray-700">
-        <DarkLight />
-        <ChangeLang />
+      <div className="h-screen bg-gray-200 flex justify-center dark:bg-black">
         <div className="flex flex-col items-center max-w-[30rem] m-auto w-[30rem] bg-white rounded-md dark:bg-slate-900 dark:text-white">
           <div className="mt-6 text-3xl font-bold">
             {t("registerPage.register")}
@@ -234,8 +251,25 @@ function Register(props: Props) {
                 {errors.confPassword.message}
               </span>
             )}
+            <label
+              className={`mt-3 font-bold pl-2 ${
+                i18n.language == "ar" && "text-right"
+              }`}
+            >
+              {t("registerAfter.upload personal picture")}
+            </label>
             <input
-              className="shadow-md transition duration-500 hover:shadow-none shadow-gray-500 cursor-pointer mt-8 w-80 bg-blue-500 rounded-md py-1 text-white hover:bg-blue-600"
+              {...register("img", {
+                required: t("errors.Password is required"),
+              })}
+              onChange={(e) => {
+                setImg(e.target.files![0]);
+              }}
+              type="file"
+              className="shadow-sm pr-10 w-full mt-1 placeholder:text-opacity-60 placeholder:text-black py-1 bg-blue-100  rounded-md outline-blue-500 pl-2"
+            ></input>
+            <input
+              className="w-full shadow-md transition duration-500 hover:shadow-none shadow-gray-500 cursor-pointer mt-8 bg-blue-500 rounded-md py-1 text-white hover:bg-blue-600"
               type="submit"
               value={t("registerPage.register")}
             ></input>

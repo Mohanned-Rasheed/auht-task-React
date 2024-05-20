@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { RootState } from "../state/store";
 import { useSelector } from "react-redux";
 import { auth } from "../firebase/config";
@@ -17,12 +17,16 @@ function Header(props: Props) {
     }
   });
   let [isLodaing, setIsLoading] = useState(false);
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user);
+  const [image, setImage] = useState<string | null>("");
+  useEffect(() => {
+    setImage(window.localStorage.getItem("profileImg"));
+  }, [window.localStorage.getItem("profileImg")]);
   return (
     <>
-      <div className="h-fit py-3 bg-gray-300 flex justify-around items-center dark:bg-gray-700">
+      <div className="h-fit py-3 bg-gray-300 flex justify-around items-center dark:bg-gray-700 dark:text-white">
         <div className="font-bold text-2xl">Auth Task</div>
         <div
           className="font-bold cursor-pointer"
@@ -45,7 +49,7 @@ function Header(props: Props) {
                       navigate("login");
                     }
                   }}
-                  className="font-bold border border-black rounded-lg p-2 cursor-pointer hover:opacity-60"
+                  className="font-bold border border-black dark:border-white rounded-lg p-2 cursor-pointer hover:opacity-60"
                 >
                   {t("header.logout")}
                 </button>
@@ -54,9 +58,9 @@ function Header(props: Props) {
                     onClick={() => {
                       navigate("/edit");
                     }}
-                    className="cursor-pointer hover:opacity-60"
+                    className="cursor-pointer hover:opacity-60 rounded-full"
                     width={40}
-                    src={profilePNG}
+                    src={image || profilePNG}
                   ></img>
                   <div>{auth.currentUser?.email}</div>
                 </div>
@@ -67,7 +71,7 @@ function Header(props: Props) {
                   onClick={() => {
                     navigate("/login");
                   }}
-                  className="font-bold border border-black rounded-lg p-2 cursor-pointer hover:opacity-60"
+                  className="font-bold border border-black dark:border-white rounded-lg p-2 cursor-pointer hover:opacity-60"
                 >
                   {t("header.login")}
                 </button>
@@ -75,7 +79,7 @@ function Header(props: Props) {
                   onClick={() => {
                     navigate("/sginup");
                   }}
-                  className="font-bold border border-black rounded-lg p-2 cursor-pointer hover:opacity-60"
+                  className="font-bold border border-black dark:border-white rounded-lg p-2 cursor-pointer hover:opacity-60"
                 >
                   {t("header.sgin up")}
                 </button>

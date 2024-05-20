@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import DarkLight from "../components/darkLight";
 import { useTranslation } from "react-i18next";
-import ChangeLang from "../components/changeLang";
 import { doc, setDoc } from "firebase/firestore";
-import { db, auth } from "../firebase/config";
+import { db, auth, imageDB } from "../firebase/config";
 import { useNavigate } from "react-router-dom";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 interface Props {}
 type FormFields = {
@@ -13,9 +12,6 @@ type FormFields = {
   nameArabic: string;
   date: string;
   phoneNumber: string;
-  email: string;
-  password: string;
-  confPassword: string;
 };
 type EditData = {
   nameInEnglish: string;
@@ -25,12 +21,36 @@ type EditData = {
 };
 
 function Edit(props: Props) {
+  const {} = props;
+  const [t, i18n] = useTranslation();
+  const [disabledFlag, setDisabledFlag] = useState(true);
+  const [editData, setEditData] = useState<EditData>({
+    dateOfBirth: "",
+    mobileNumber: "",
+    nameInEnglish: "",
+    nameinArabic: "",
+  });
+  const date = new Date(window.localStorage.getItem("dateOfBirth")!);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormFields>();
   const navigate = useNavigate();
+  const [img, setImg] = useState<File | null>(null);
+  useEffect(() => {
+    if (!auth.currentUser) {
+      navigate("/");
+    }
+  }, [auth.currentUser]);
+  async function getImage(location: string) {
+    const ImageURL = await getDownloadURL(ref(imageDB, location));
+    return await ImageURL;
+  }
+  const imageFrom = async () => {
+    const image = await getImage(`files/${auth.currentUser?.email}`);
+    window.localStorage.setItem("profileImg", image);
+  };
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     await setDoc(doc(db, "users", auth.currentUser!.uid), {
       nameInEnglish:
@@ -58,6 +78,15 @@ function Edit(props: Props) {
           "nameinArabic",
           data.nameArabic || window.localStorage.getItem("nameinArabic")!
         );
+        if (img != null) {
+          uploadBytes(ref(imageDB, `files/${auth.currentUser?.email}`), img!)
+            .then(() => {
+              imageFrom();
+            })
+            .catch((err) => {
+              alert(err);
+            });
+        }
         setEditData({
           dateOfBirth: "",
           mobileNumber: "",
@@ -72,26 +101,10 @@ function Edit(props: Props) {
     navigate("/");
     alert(t("messages.your information has been updated"));
   };
-  const {} = props;
-  const [t, i18n] = useTranslation();
-  const [disabledFlag, setDisabledFlag] = useState(true);
-  const [editData, setEditData] = useState<EditData>({
-    dateOfBirth: "",
-    mobileNumber: "",
-    nameInEnglish: "",
-    nameinArabic: "",
-  });
-  const date = new Date(window.localStorage.getItem("dateOfBirth")!);
-  useEffect(() => {
-    if (!auth.currentUser) {
-      navigate("/");
-    }
-  }, [auth.currentUser]);
+
   return (
     <>
-      <div className="h-screen bg-gray-200 flex justify-center dark:bg-gray-700">
-        <DarkLight />
-        <ChangeLang />
+      <div className="h-screen bg-gray-200 flex justify-center dark:bg-black">
         <div className="flex flex-col items-center max-w-[30rem] m-auto w-[30rem] bg-white rounded-md dark:bg-slate-900 dark:text-white">
           <div
             className={`${
@@ -231,13 +244,40 @@ function Edit(props: Props) {
                 {errors.phoneNumber.message}
               </span>
             )}
+            <label
+              className={`mt-3 font-bold pl-2 ${
+                i18n.language == "ar" && "text-right"
+              }`}
+            >
+              {t("registerPage.upload personal picture")}
+            </label>
             <input
               disabled={disabledFlag}
+              onChange={(e) => {
+                setImg(e.target.files![0]);
+              }}
+              type="file"
+              className="shadow-sm pr-10 w-full placeholder:text-opacity-60 mt-1 placeholder:text-black py-1 bg-blue-100  rounded-md outline-blue-500 pl-2"
+            ></input>
+            <input
+              disabled={
+                disabledFlag &&
+                (editData.nameInEnglish != "" ||
+                  editData.nameinArabic != "" ||
+                  editData.mobileNumber != "" ||
+                  editData.dateOfBirth != "" ||
+                  img != null)
+              }
               className={`
               ${
                 !disabledFlag &&
+                (editData.nameInEnglish != "" ||
+                  editData.nameinArabic != "" ||
+                  editData.mobileNumber != "" ||
+                  editData.dateOfBirth != "" ||
+                  img != null) &&
                 "cursor-pointer hover:bg-blue-600 hover:shadow-none"
-              } shadow-md transition duration-500 shadow-gray-500 mt-8 w-80 bg-blue-500 rounded-md py-1 text-white mb-12`}
+              } w-full shadow-md transition duration-500 shadow-gray-500 mt-8  bg-blue-500 rounded-md py-1 text-white mb-12`}
               type="submit"
               value={t("editPage.update")}
             ></input>

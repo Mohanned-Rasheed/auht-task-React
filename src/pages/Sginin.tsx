@@ -1,33 +1,40 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import GoogleImg from "../assets/Google__G__logo.svg.png";
 import { Link } from "react-router-dom";
-import DarkLight from "../components/darkLight.tsx";
-import ChangeLang from "../components/changeLang.tsx";
 import {
   sendEmailVerification,
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { auth, db } from "../firebase/config.ts";
+import { auth, db, imageDB } from "../firebase/config.ts";
 import { useNavigate } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
+import { getDownloadURL, ref } from "firebase/storage";
 interface Props {}
 
 function SginIn(props: Props) {
   const {} = props;
-  const [t, i18n] = useTranslation();
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [t] = useTranslation();
   const [email, setEmail] = useState("");
   const [password, Setpassword] = useState("");
   const provider = new GoogleAuthProvider();
   const navigate = useNavigate();
+  async function getImage(location: string) {
+    const ImageURL = await getDownloadURL(ref(imageDB, location));
+    return await ImageURL;
+  }
+  const imageFrom = async () => {
+    const image = await getImage(`files/${auth.currentUser?.email}`);
+    window.localStorage.setItem("profileImg", image);
+  };
+
   return (
     <>
       {" "}
-      <div className="min-h-screen bg-gray-200 dark:bg-gray-700">
-        <DarkLight />
-        <ChangeLang />
+      <div className="min-h-screen bg-gray-200 dark:bg-black">
         <div className="flex flex-col justify-center min-h-screen">
           <div className="flex flex-col max-w-[30rem] w-full h-fit rounded-lg mx-auto items-center bg-white dark:bg-slate-900 dark:text-white">
             <div className="text-3xl font-bold mt-4">
@@ -39,6 +46,7 @@ function SginIn(props: Props) {
                 signInWithEmailAndPassword(auth, email, password)
                   .then(async () => {
                     alert(t("messages.welcome back"));
+                    imageFrom();
                     const docRef = doc(db, "users", auth.currentUser!.uid);
                     const docSnap = await getDoc(docRef);
 
@@ -65,7 +73,7 @@ function SginIn(props: Props) {
                     }
                     navigate("/");
                   })
-                  .catch((error) => {
+                  .catch(() => {
                     alert(t("messages.email or password wrong"));
                   });
               }}
@@ -83,18 +91,32 @@ function SginIn(props: Props) {
                   className="bg-gray-100 rounded-md outline-blue-500 pl-2 py-1"
                 ></input>
               </label>
-              <label className="flex flex-col w-80">
-                {t("loginPage.password")}
-                <input
-                  required
-                  value={password}
-                  onChange={(input) => {
-                    Setpassword(input.target.value);
+              <div className="flex relative items-center justify-center">
+                <span
+                  onClick={() => {
+                    setPasswordVisible(!passwordVisible);
                   }}
-                  name="password"
-                  className="bg-gray-100 rounded-md outline-blue-500 pl-2 py-1"
-                ></input>
-              </label>
+                  className="absolute right-1 top-[2.2rem] cursor-pointer text-sm"
+                >
+                  {passwordVisible
+                    ? t("registerPage.hide")
+                    : t("registerPage.show")}
+                </span>
+
+                <label className="flex flex-col w-80">
+                  {t("loginPage.password")}
+                  <input
+                    required
+                    type={`${passwordVisible ? "text" : "password"}`}
+                    value={password}
+                    onChange={(input) => {
+                      Setpassword(input.target.value);
+                    }}
+                    name="password"
+                    className="bg-gray-100 rounded-md outline-blue-500 pl-2 py-1"
+                  ></input>
+                </label>
+              </div>
               <div className="flex flex-col justify-center items-center w-full">
                 <Link
                   to={"/forgotpassword"}
@@ -170,29 +192,3 @@ function SginIn(props: Props) {
 }
 
 export default SginIn;
-
-//{t("title")}
-{
-  /* <button className="h-12  " onClick={toggleTheme}>
-  Dark Mode
-</button> */
-}
-{
-  /* {i18n.language == "en" ? (
-  <button
-    onClick={() => {
-      i18n.changeLanguage("ar");
-    }}
-  >
-    عربي
-  </button>
-) : (
-  <button
-    onClick={() => {
-      i18n.changeLanguage("en");
-    }}
-  >
-    English
-  </button>
-)} */
-}

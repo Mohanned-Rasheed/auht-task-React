@@ -3,7 +3,8 @@
     "welcome back": "Welcome Back",
     "email or password wrong": "Email or Password Wrong",
     "email has sent": "Email Has Sent",
-    "your information has been updated": "Your Information Has Been Updated"
+    "your information has been updated": "Your Information Has Been Updated",
+    "reset password sent to email": "Reset Password Sent To Email!"
   },
   "homePage": {
     "hello": "Hello",
@@ -44,7 +45,14 @@
     "show": "Show",
     "hide": "Hide",
     "alreday have an account login": "Alreday have an account?",
-    "login": "Login"
+    "login": "Login",
+    "upload personal picture": "Upload Personal Picture"
+  },
+  "registerAfter": {
+    "personal informaion": "Personal Informaion",
+    "submit": "Submit",
+    "one last step Complete neccery information": "One Last Step Complete Neccery Information",
+    "upload personal picture": "Upload Personal Picture"
   },
   "errors": {
     "Name in English is required": "Name in English is required",

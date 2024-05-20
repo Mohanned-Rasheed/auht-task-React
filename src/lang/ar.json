@@ -3,7 +3,8 @@
     "welcome back": "أهلا مجددا",
     "email or password wrong": "كلمة المرور او البريد الالكتروني ادخل بشكل خاطئ",
     "email has sent": "تم الارسال على البريد الالكتروني",
-    "your information has been updated": "لقد تم تحديث معلوماتك"
+    "your information has been updated": "لقد تم تحديث معلوماتك",
+    "reset password sent to email": "إعادة تعيين كلمة المرور ارسلت إلى البريد الإلكتروني!"
   },
   "homePage": {
     "hello": "مرحبا",
@@ -25,8 +26,8 @@
   },
   "loginPage": {
     "login": "تسجيل دخول",
-    "email": "ايميل",
-    "password": "الرقم السري",
+    "email": "البريد الالكتروني",
+    "password": "كلمة المرور",
     "forgot password": "نسيت الرقم السري؟",
     "or": "أو",
     "login with google": "تسجل باستخدام قوقل",
@@ -38,13 +39,20 @@
     "full name in english": "أسمك كامل بالانقليزي",
     "full name in arabic": "أسمك كامل بالعربي",
     "mobile number": "رقم الجوال",
-    "email address": "الايميل",
-    "password": "الرقم السري",
-    "confirm password": "تأكيد الرقم السري",
+    "email address": "البريد الالكتروني",
+    "password": "كلمة المرور",
+    "confirm password": "تأكيد كلمة المرور",
     "show": "اظهار",
     "hide": "اخفاء",
     "alreday have an account login": "هل لديك حساب مسبقا؟",
-    "login": "تسجيل دخول"
+    "login": "تسجيل دخول",
+    "upload personal picture": "تحميل الصورة الشخصية"
+  },
+  "registerAfter": {
+    "personal informaion": "المعلومات الشخصية",
+    "submit": "تأكيد",
+    "one last step Complete neccery information": "خطوة أخيرة أكمل المعلومات الضرورية",
+    "upload personal picture": "تحميل الصورة الشخصية"
   },
   "errors": {
     "Name in English is required": "الاسم باللغة الانجليزية مطلوب",

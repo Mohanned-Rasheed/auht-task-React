@@ -1,12 +1,21 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 interface Props {}
 
 function DarkLight(props: Props) {
   const {} = props;
-  const [t, i18n] = useTranslation();
-
+  const [t] = useTranslation();
+  const [darkMode, setDarkMode] = useState(
+    localStorage.getItem("mode") ? localStorage.getItem("mode") : "Light"
+  );
+  useEffect(() => {
+    if (localStorage.getItem("mode") == "Dark") {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("mode", "Dark");
+      setDarkMode("Dark");
+    }
+  }, [darkMode]);
   const toggleTheme = () => {
     document.documentElement.classList.toggle("dark");
 
@@ -17,18 +26,6 @@ function DarkLight(props: Props) {
     }
     setDarkMode(localStorage.getItem("mode"));
   };
-
-  const [darkMode, setDarkMode] = useState(
-    localStorage.getItem("mode") ? localStorage.getItem("mode") : "Light"
-  );
-
-  useEffect(() => {
-    if (localStorage.getItem("mode") == "Dark") {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("mode", "Dark");
-      setDarkMode("Dark");
-    }
-  }, [darkMode]);
 
   return (
     <>

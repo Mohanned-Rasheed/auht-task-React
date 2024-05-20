@@ -1,12 +1,9 @@
-interface Props {}
 import { useSelector } from "react-redux";
 import { auth } from "../firebase/config";
 import { RootState } from "../state/store";
-import DarkLight from "../components/darkLight";
-import ChangeLang from "../components/changeLang";
 import { sendEmailVerification } from "firebase/auth";
 import { useTranslation } from "react-i18next";
-
+interface Props {}
 function Home(props: Props) {
   const {} = props;
   const [t, i18n] = useTranslation();
@@ -14,9 +11,6 @@ function Home(props: Props) {
   return (
     <>
       <div className="h-screen bg-gray-200 dark:bg-black dark:text-white">
-        <DarkLight />
-        <ChangeLang />
-
         {
           // Verfication Message
         }
@@ -44,11 +38,11 @@ function Home(props: Props) {
           ////
         }
 
-        <div className={`w-fit  m-auto pt-16  flex justify-center`}>
+        <div className={`w-fit m-auto pt-16 flex justify-center`}>
           <div
             className={`${
               i18n.language == "ar" && "flex-row-reverse gap-1"
-            }  my-4 font-bold text-2xl  border border-gray-500 rounded-lg p-8`}
+            }  my-4 font-bold text-2xl border border-gray-500 rounded-lg p-8`}
           >
             {window.localStorage.getItem("nameInEnglish") ? (
               <div

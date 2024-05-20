@@ -7,12 +7,16 @@ import { Provider } from "react-redux";
 import { store } from "./state/store.ts";
 import { BrowserRouter } from "react-router-dom";
 import Header from "./components/Header.tsx";
+import DarkLight from "./components/darkLight.tsx";
+import ChangeLang from "./components/changeLang.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     <React.StrictMode>
       <BrowserRouter>
         <Header />
+        <DarkLight />
+        <ChangeLang />
         <App />
       </BrowserRouter>
     </React.StrictMode>
