@@ -22,7 +22,7 @@ type FormFields = {
   password: string;
   confPassword: string;
 };
-function Register(props: Props) {
+function RegisterAfter(props: Props) {
   const {
     getValues,
     register,
@@ -32,25 +32,19 @@ function Register(props: Props) {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confpasswordVisible, setconfPasswordVisible] = useState(false);
   const navigate = useNavigate();
-  const onSubmit: SubmitHandler<FormFields> = (data) => {
-    createUserWithEmailAndPassword(auth, data.email, data.password)
-      .then(async () => {
-        window.localStorage.setItem("dateOfBirth", data.date.toString());
-        window.localStorage.setItem("mobileNumber", data.phoneNumber);
-        window.localStorage.setItem("nameInEnglish", data.nameEnglish);
-        window.localStorage.setItem("nameinArabic", data.nameArabic);
-        await setDoc(doc(db, "users", auth.currentUser!.uid), {
-          nameInEnglish: data.nameEnglish,
-          nameinArabic: data.nameArabic,
-          dateOfBirth: data.date.toString(),
-          mobileNumber: data.phoneNumber,
-        });
-        sendEmailVerification(auth.currentUser!);
-        navigate("/");
-      })
-      .catch((err) => {
-        alert(err);
-      });
+  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    window.localStorage.setItem("dateOfBirth", data.date.toString());
+    window.localStorage.setItem("mobileNumber", data.phoneNumber);
+    window.localStorage.setItem("nameInEnglish", data.nameEnglish);
+    window.localStorage.setItem("nameinArabic", data.nameArabic);
+    await setDoc(doc(db, "users", auth.currentUser!.uid), {
+      nameInEnglish: data.nameEnglish,
+      nameinArabic: data.nameArabic,
+      dateOfBirth: data.date.toString(),
+      mobileNumber: data.phoneNumber,
+    });
+    sendEmailVerification(auth.currentUser!);
+    navigate("/");
   };
   const {} = props;
   const [t, i18n] = useTranslation();
@@ -151,90 +145,6 @@ function Register(props: Props) {
               </span>
             )}
             <input
-              {...register("email", {
-                required: t("errors.Email is required"),
-                pattern: {
-                  value: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-                  message: t("errors.Enter vaild email"),
-                },
-              })}
-              placeholder={t("registerPage.email address")}
-              className="shadow-sm placeholder:text-opacity-60 mt-4 placeholder:text-black  py-1 bg-blue-100  rounded-md outline-blue-500 pl-2"
-            ></input>
-            {errors.email && (
-              <span className="pl-2 text-sm text-red-500">
-                {errors.email.message}
-              </span>
-            )}
-            <div className="flex relative items-center justify-center">
-              <span
-                onClick={() => {
-                  setPasswordVisible(!passwordVisible);
-                }}
-                className="absolute right-1 top-[1.3rem] cursor-pointer text-sm"
-              >
-                {passwordVisible
-                  ? t("registerPage.hide")
-                  : t("registerPage.show")}
-              </span>
-              <input
-                {...register("password", {
-                  required: t("errors.Password is required"),
-                  pattern: {
-                    value: /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$])/,
-                    message: t(
-                      "errors.password must including letter,number,and symbol"
-                    ),
-                  },
-                  minLength: {
-                    value: 8,
-                    message: t(
-                      "errors.The password must more than 8 characters"
-                    ),
-                  },
-                })}
-                type={passwordVisible ? "text" : "password"}
-                placeholder={t("registerPage.password")}
-                className="shadow-sm pr-10 w-full placeholder:text-opacity-60 mt-4 placeholder:text-black  py-1 bg-blue-100  rounded-md outline-blue-500 pl-2"
-              ></input>
-            </div>
-            {errors.password && (
-              <span className="pl-2 text-sm text-red-500">
-                {errors.password.message}
-              </span>
-            )}
-            <div className="flex relative items-center justify-center">
-              <span
-                onClick={() => {
-                  setconfPasswordVisible(!confpasswordVisible);
-                }}
-                className="absolute right-1 top-[1.3rem] cursor-pointer text-sm"
-              >
-                {confpasswordVisible
-                  ? t("registerPage.hide")
-                  : t("registerPage.show")}
-              </span>
-              <input
-                {...register("confPassword", {
-                  required: t("errors.Confirm password is required"),
-                  validate: (value) => {
-                    if (value != getValues("password")) {
-                      return t("errors.Confirm password not same as password");
-                    }
-                    return true;
-                  },
-                })}
-                type={confpasswordVisible ? "text" : "password"}
-                placeholder={t("registerPage.confirm password")}
-                className="w-full shadow-sm placeholder:text-opacity-60 mt-4 placeholder:text-black  py-1 bg-blue-100  rounded-md outline-blue-500 pl-2"
-              ></input>
-            </div>
-            {errors.confPassword && (
-              <span className="pl-2 text-sm text-red-500">
-                {errors.confPassword.message}
-              </span>
-            )}
-            <input
               className="shadow-md transition duration-500 hover:shadow-none shadow-gray-500 cursor-pointer mt-8 w-80 bg-blue-500 rounded-md py-1 text-white hover:bg-blue-600"
               type="submit"
               value={t("registerPage.register")}
@@ -252,4 +162,4 @@ function Register(props: Props) {
   );
 }
 
-export default Register;
+export default RegisterAfter;

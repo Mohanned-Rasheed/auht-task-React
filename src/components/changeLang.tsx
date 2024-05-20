@@ -13,6 +13,7 @@ function ChangeLang(props: Props) {
           <button
             onClick={() => {
               i18n.changeLanguage("ar");
+              window.localStorage.setItem("lang", "ar");
             }}
           >
             عربي
@@ -21,6 +22,7 @@ function ChangeLang(props: Props) {
           <button
             onClick={() => {
               i18n.changeLanguage("en");
+              window.localStorage.setItem("lang", "en");
             }}
           >
             English

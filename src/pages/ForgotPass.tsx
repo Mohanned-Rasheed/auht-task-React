@@ -1,7 +1,8 @@
 import { sendPasswordResetEmail } from "firebase/auth";
 import React, { useState } from "react";
 import { auth } from "../firebase/config";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 interface Props {}
 type FormFields = {
@@ -9,36 +10,42 @@ type FormFields = {
 };
 function ForgotPass(props: Props) {
   const {} = props;
+
+  const [t, i18n] = useTranslation();
   const [email, setEmail] = useState("");
-  const {
-    getValues,
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormFields>();
-  const onSubmit: SubmitHandler<FormFields> = (data) => {
-    sendPasswordResetEmail(auth, email).then(() => {
-      alert("Reset Password Sent To Email!");
-    });
-  };
+  const [err, setErr] = useState("");
+  const navigate = useNavigate();
   return (
     <>
       <div className="h-screen bg-gray-200 flex justify-center items-center">
         <div className="max-w-[30rem] w-[30rem] border flex items-center flex-col bg-white rounded-md shadow-md">
           <div className="mt-5 text-2xl font-bold"> Reset Password</div>
           <form
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={(target) => {
+              target.preventDefault();
+              if (/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(email)) {
+                sendPasswordResetEmail(auth, email).then(() => {
+                  setErr("");
+                  alert("Reset Password Sent To Email!");
+                  navigate("/login");
+                });
+              } else {
+                setErr(t("errors.Enter vaild email"));
+              }
+            }}
             className="flex flex-col justify-center items-center"
           >
             <input
-              {...(register("email"), { required: true })}
-              value={email}
               onChange={(input) => {
                 setEmail(input.target.value);
               }}
               placeholder="Email"
+              name="email"
               className="mt-12 max-w-80 w-80 shadow-sm placeholder:text-opacity-60 placeholder:text-black py-2 bg-gray-200 rounded-md outline-blue-500 pl-2"
             ></input>
+            {err.length > 0 && (
+              <span className="w-full text-red-500">{err}</span>
+            )}
             <input
               type="submit"
               placeholder="Send"

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import DarkLight from "../components/darkLight.tsx";
 import ChangeLang from "../components/changeLang.tsx";
 import {
+  sendEmailVerification,
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
@@ -37,7 +38,7 @@ function SginIn(props: Props) {
                 target.preventDefault();
                 signInWithEmailAndPassword(auth, email, password)
                   .then(async () => {
-                    alert("Nice");
+                    alert(t("messages.welcome back"));
                     const docRef = doc(db, "users", auth.currentUser!.uid);
                     const docSnap = await getDoc(docRef);
 
@@ -65,7 +66,7 @@ function SginIn(props: Props) {
                     navigate("/");
                   })
                   .catch((error) => {
-                    alert(error);
+                    alert(t("messages.email or password wrong"));
                   });
               }}
               className="mt-12 gap-6 flex flex-col justify-center items-center text-lg w-[65%]"
@@ -73,6 +74,7 @@ function SginIn(props: Props) {
               <label className="flex flex-col w-80">
                 {t("loginPage.email")}
                 <input
+                  required
                   value={email}
                   onChange={(input) => {
                     setEmail(input.target.value);
@@ -84,6 +86,7 @@ function SginIn(props: Props) {
               <label className="flex flex-col w-80">
                 {t("loginPage.password")}
                 <input
+                  required
                   value={password}
                   onChange={(input) => {
                     Setpassword(input.target.value);
@@ -94,13 +97,13 @@ function SginIn(props: Props) {
               </label>
               <div className="flex flex-col justify-center items-center w-full">
                 <Link
-                  to={"/forgotpass"}
-                  className="flex justify-end w-full text-sm cursor-pointer"
+                  to={"/forgotpassword"}
+                  className="flex justify-end w-full text-sm cursor-pointer hover:underline"
                 >
                   {t("loginPage.forgot password")}
                 </Link>
                 <input
-                  className="cursor-pointer mt-4 w-80 bg-blue-500 rounded-md py-1 text-white hover:bg-blue-600"
+                  className="shadow-md transition duration-500 hover:shadow-none shadow-gray-500 cursor-pointer mt-4 w-80 bg-blue-500 rounded-md py-1 text-white hover:bg-blue-600"
                   type="submit"
                   value={t("loginPage.login")}
                 ></input>
@@ -110,7 +113,35 @@ function SginIn(props: Props) {
             <div
               onClick={() => {
                 signInWithPopup(auth, provider)
-                  .then(() => {})
+                  .then(async () => {
+                    sendEmailVerification(auth.currentUser!);
+                    const docRef = doc(db, "users", auth.currentUser!.uid);
+                    const docSnap = await getDoc(docRef);
+
+                    if (docSnap.exists()) {
+                      const data = docSnap.data();
+                      window.localStorage.setItem(
+                        "dateOfBirth",
+                        data.dateOfBirth
+                      );
+                      window.localStorage.setItem(
+                        "mobileNumber",
+                        data.mobileNumber
+                      );
+                      window.localStorage.setItem(
+                        "nameInEnglish",
+                        data.nameInEnglish
+                      );
+                      window.localStorage.setItem(
+                        "nameinArabic",
+                        data.nameinArabic
+                      );
+                    } else {
+                      console.log("No such document!");
+                    }
+                    navigate("/");
+                    alert(t("messages.welcome back"));
+                  })
                   .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
@@ -126,7 +157,10 @@ function SginIn(props: Props) {
             </div>
             <div className=" my-10">
               {t("loginPage.dont have and account register")}
-              <Link to={"/sginup"}> {t("loginPage.register")}</Link>
+              <Link className="hover:underline" to={"/sginup"}>
+                {" "}
+                {t("loginPage.register")}
+              </Link>
             </div>
           </div>
         </div>

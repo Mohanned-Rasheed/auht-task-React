@@ -1,4 +1,28 @@
 {
+  "messages": {
+    "welcome back": "Welcome Back",
+    "email or password wrong": "Email or Password Wrong",
+    "email has sent": "Email Has Sent",
+    "your information has been updated": "Your Information Has Been Updated"
+  },
+  "homePage": {
+    "hello": "Hello",
+    "verifiedMessage": "Your Account Has'nt verified Yet!",
+    "resend verification": "Resend Verification",
+    "not login": "your not loged in"
+  },
+  "editPage": {
+    "profile": "Profile",
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "update": "Update"
+  },
+  "header": {
+    "home": "Home",
+    "login": "Login",
+    "sgin up": "Sgin Up",
+    "logout": "Logout"
+  },
   "loginPage": {
     "login": "Login",
     "email": "Email",

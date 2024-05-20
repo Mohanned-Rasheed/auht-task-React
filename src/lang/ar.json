@@ -1,4 +1,28 @@
 {
+  "messages": {
+    "welcome back": "أهلا مجددا",
+    "email or password wrong": "كلمة المرور او البريد الالكتروني ادخل بشكل خاطئ",
+    "email has sent": "تم الارسال على البريد الالكتروني",
+    "your information has been updated": "لقد تم تحديث معلوماتك"
+  },
+  "homePage": {
+    "hello": "مرحبا",
+    "verifiedMessage": "!لم يتم التحقق من حسابك بعد",
+    "resend verification": "إعادة التحقق",
+    "not login": "لم تقم بتسجيل الدخول"
+  },
+  "editPage": {
+    "profile": "الحساب الشخصي",
+    "edit": "تعديل",
+    "cancel": "الغاء",
+    "update": "تحديث"
+  },
+  "header": {
+    "home": "الصفحة الرئيسية",
+    "login": "تسجيل دخول",
+    "sgin up": "انشاء حساب",
+    "logout": "تسجيل خروج"
+  },
   "loginPage": {
     "login": "تسجيل دخول",
     "email": "ايميل",
