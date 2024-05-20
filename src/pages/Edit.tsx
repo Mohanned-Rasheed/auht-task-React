@@ -108,18 +108,27 @@ function Edit(props: Props) {
         <div className="flex flex-col items-center max-w-[30rem] m-auto w-[30rem] bg-white rounded-md dark:bg-slate-900 dark:text-white">
           <div
             className={`${
-              i18n.language == "ar" && "flex-row-reverse"
-            } mt-6 text-3xl font-bold flex justify-between  items-center w-[67%] `}
+              i18n.language == "ar" && "flex-row-reverse "
+            } mt-6 text-3xl font-bold flex justify-around items-center w-full `}
           >
-            <div>{t("editPage.profile")}</div>
-            <div
+            <div className="">{t("editPage.profile")}</div>
+            <button
+              disabled={!auth.currentUser?.emailVerified}
               onClick={() => {
                 setDisabledFlag(!disabledFlag);
               }}
-              className="text-xl hover:underline cursor-pointer mt-2"
+              className={`mt-2 ${
+                auth.currentUser?.emailVerified
+                  ? "text-xl hover:underline cursor-pointer"
+                  : "text-xs "
+              }`}
             >
-              {disabledFlag ? t("editPage.edit") : t("editPage.cancel")}
-            </div>
+              {auth.currentUser?.emailVerified
+                ? disabledFlag
+                  ? t("editPage.edit")
+                  : t("editPage.cancel")
+                : t("messages.email must verified to edit")}
+            </button>
           </div>
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -261,16 +270,16 @@ function Edit(props: Props) {
             ></input>
             <input
               disabled={
-                disabledFlag &&
-                (editData.nameInEnglish != "" ||
+                !(
+                  editData.nameInEnglish != "" ||
                   editData.nameinArabic != "" ||
                   editData.mobileNumber != "" ||
                   editData.dateOfBirth != "" ||
-                  img != null)
+                  img != null
+                )
               }
               className={`
               ${
-                !disabledFlag &&
                 (editData.nameInEnglish != "" ||
                   editData.nameinArabic != "" ||
                   editData.mobileNumber != "" ||

@@ -4,7 +4,9 @@
     "email or password wrong": "كلمة المرور او البريد الالكتروني ادخل بشكل خاطئ",
     "email has sent": "تم الارسال على البريد الالكتروني",
     "your information has been updated": "لقد تم تحديث معلوماتك",
-    "reset password sent to email": "إعادة تعيين كلمة المرور ارسلت إلى البريد الإلكتروني!"
+    "reset password sent to email": "إعادة تعيين كلمة المرور ارسلت إلى البريد الإلكتروني!",
+    "email already registered": "البريد الإلكتروني مسجل مسبقا",
+    "email must verified to edit": "يجب التحقق من البريد الإلكتروني للتعديل"
   },
   "homePage": {
     "hello": "مرحبا",

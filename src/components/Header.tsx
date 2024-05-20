@@ -22,7 +22,9 @@ function Header(props: Props) {
   const user = useSelector((state: RootState) => state.user);
   const [image, setImage] = useState<string | null>("");
   useEffect(() => {
-    setImage(window.localStorage.getItem("profileImg"));
+    setTimeout(() => {
+      setImage(window.localStorage.getItem("profileImg"));
+    }, 500);
   }, [window.localStorage.getItem("profileImg")]);
   return (
     <>

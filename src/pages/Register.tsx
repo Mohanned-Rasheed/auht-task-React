@@ -19,7 +19,6 @@ type FormFields = {
   email: string;
   password: string;
   confPassword: string;
-  img: File;
 };
 function Register(props: Props) {
   const {
@@ -69,7 +68,10 @@ function Register(props: Props) {
         navigate("/");
       })
       .catch((err) => {
-        alert(err);
+        if (err.code == "auth/email-already-in-use") {
+          alert(t("messages.email already registered"));
+        }
+       
       });
   };
 
@@ -259,9 +261,6 @@ function Register(props: Props) {
               {t("registerAfter.upload personal picture")}
             </label>
             <input
-              {...register("img", {
-                required: t("errors.Password is required"),
-              })}
               onChange={(e) => {
                 setImg(e.target.files![0]);
               }}
