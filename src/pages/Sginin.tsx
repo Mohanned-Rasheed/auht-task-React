@@ -136,7 +136,10 @@ function SginIn(props: Props) {
               onClick={() => {
                 signInWithPopup(auth, provider)
                   .then(async () => {
-                    sendEmailVerification(auth.currentUser!);
+                    if (!auth.currentUser?.emailVerified) {
+                      sendEmailVerification(auth.currentUser!);
+                    }
+
                     const docRef = doc(db, "users", auth.currentUser!.uid);
                     const docSnap = await getDoc(docRef);
 
